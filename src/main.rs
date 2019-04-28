@@ -1,3 +1,4 @@
+use std::f64::consts::PI;
 use std::time::Instant;
 
 fn sum_of_floats(f: fn(i32) -> f64, number_of_iterations: i32, starting_number: f64) -> f64 {
@@ -21,12 +22,21 @@ fn gen_pi(number_of_iterations: i32) -> f64 {
 }
 
 fn main() {
+    println!("\n");
+
+    println!("Estimating PI using Rabinowitz and Wagon's spigot algorithm");
+
+    println!("=================================");
     let pi_of_ten_million_iterations = gen_pi(10_000_000);
     let pi_of_100_million_iterations = gen_pi(100_000_000);
     let pi_of_one_billion_iterations = gen_pi(1_000_000_000);
-    let system_pi = std::f64::consts::PI;
 
-    println!("system pi constant: {}", system_pi);
+    println!("=================================");
+
+    println!("system pi constant: {}", PI);
+
+    println!("=================================");
+
     println!(
         "pi estimate of 10M iterations: {}",
         pi_of_ten_million_iterations
@@ -38,5 +48,26 @@ fn main() {
     println!(
         "pi estimate of 1B iterations: {}",
         pi_of_one_billion_iterations
+    );
+
+    let estimated_pi_string = pi_of_one_billion_iterations.to_string();
+    let system_pi_string = PI.to_string();
+    let mut correct_digits = 0;
+
+    for (i, c) in system_pi_string.chars().enumerate() {
+        if c == estimated_pi_string.chars().nth(i).unwrap() {
+            if c != '.' {
+                correct_digits += 1;
+            }
+        } else {
+            break;
+        }
+    }
+
+    println!("=================================");
+
+    println!(
+        "Amount of correct digits of PI estimated using 1B iterations of the algorithm: {}",
+        correct_digits
     );
 }
